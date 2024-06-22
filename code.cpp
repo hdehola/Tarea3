@@ -5,9 +5,9 @@ using namespace std;
 
 
 struct cuenta {
-// El rol es el identificador de la persona.
-// El nombre y la descripcion son valores asociados al rol
-string rol, nombre, descripcion;
+    // El rol es el identificador de la persona.
+    // El nombre y la descripcion son valores asociados al rol
+    string rol, nombre, descripcion;
 };
 
 class registro_cuentas {
