@@ -29,31 +29,53 @@ class registro_cuentas {
 
 
 int main() {
-    string linea;
-    ifstream archivo("pruebas.txt");
-    if (!archivo.is_open()) {
-        cout << "Error al abrir el archivo" << endl;
-        exit (1);
-    }
-    while(getline(prueba, linea)){  
-        string funcion = "";
-        bool flag = true;
-        for (int i = 0; i < int(linea.length()); i++) {  
-            if (bandera){      
-                funcion += linea[i];
+
+    ifstream archivo;
+    int i;
+    string linea, aux;
+    string funcion, inf2, inf3, inf4;
+    //char caracter;
+
+    archivo.open("prueba.txt", ios::in);
+    if (archivo.fail()){
+        cout << "No se pudo abrir el archivo"<< endl;
+        exit(1);
+    };
+
+    while (!archivo.eof()){
+        getline(archivo, linea);
+        for (i = 0; i < linea.length() + 1; i++){
+            if (linea[i] == ' '|| i == linea.length()){
+                if (funcion == ""){
+                    funcion = aux;
+                    aux = "";
+                }
+                else if (inf2 == ""){
+                    inf2 = aux;
+                    aux = "";
+                }   
+                else if (inf3 == ""){
+                    inf3 = aux;
+                    aux = "";
+                }
+                else if (inf4 == ""){
+                    inf4 = aux;
+                    aux = "";
             }
-            if (funcion == "AGREGAR"){
-
-            }else if (funcion == "QUITAR"){
-
-            }else if (funcion == "MODIFICAR"){
-                
-            }else if (funcion == "OBTENER"){
-                
-            }else if (funcion == "ESTADISTICAS"){
-                
-            }
-
         }
+            else if (linea[i] != ' '){  
+                aux += linea[i];     
+            }
     }
+        
+        if(funcion = "AGREGAR"){
+            c1.agregar(inf2, inf3, inf4);
+        }
+        funcion = "";
+        inf2 = "";
+        inf3 = "";
+        inf4 = "";
+    }
+    archivo.close();
+    return 0;
 }
