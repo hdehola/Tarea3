@@ -39,11 +39,24 @@ class registro_cuentas {
         }
         cuenta obtener(string rol); // Dado el rol, devuelve la cuenta con ese rol
         void agregar(cuenta c); // Se agrega una cuenta a la tabla
-        void eliminar(string rol); // Se elimina la cuenta
+        void eliminar(string rol); // Se elimina la cuenta 
         void modificar(string rol, string descripcion); // Se modifica la descripcion del rol
         void redimensionar(int n); // Se redimensiona la tabla a n espacios
         void estadisticas(); // Debe mostrar las estadisticas
 };
+
+/*****
+* cuenta registro_cuentas::obtener()
+******
+* Esta funcion recibe un rol en forma de string, luego busca dentro de la tabla hash la cuenta asignada con dicho rol y retorna esta.
+******
+* Input:
+* string rol: Se le entrega un rol para encontrar la cuenta a la que este asignada dicho rol.
+* .......
+******
+* Returns:
+* cuenta, retorna la cuenta a la que esta asignado el rol que fue entrago como parametro.
+*****/
 
 cuenta registro_cuentas::obtener(string rol){
     int contador = 0;
@@ -60,6 +73,18 @@ cuenta registro_cuentas::obtener(string rol){
     return { "" , "" , "" };
 }
 
+/*****
+* void registro_cuentas::agregar()
+******
+* Esta funcion recibe una cuenta para ser agregada en la tabla hash.
+******
+* Input:
+* cuenta c: Se le entrega la cuenta que sera agregada en la tabla hash.
+* .......
+******
+* Returns:
+* No retorna nada.
+*****/
 void registro_cuentas::agregar(cuenta c){
     int contador = 0;
     int hashing = hash(c.rol);
@@ -82,6 +107,18 @@ void registro_cuentas::agregar(cuenta c){
     }
 }
 
+/*****
+* void registro_cunentas::eliminar()
+******
+* Esta funcion recibe una cuenta para ser eliminada de la tabla hash.
+******
+* Input:
+* string rol: Se le entrega un rol para encontrar la cuenta a la que este asignada dicho rol.
+* .......
+******
+* Returns:
+* No retorna nada.
+*****/
 void registro_cuentas::eliminar(string rol){
     int contador = 0;
     int hashing = hash(rol);
@@ -104,6 +141,18 @@ void registro_cuentas::eliminar(string rol){
     }
 }
 
+/*****
+* void registro_cunentas::modificar()
+******
+* Esta funcion recibe un rol y una descripcion para modificar la descripcion de la cuenta que tiene asignado el rol entregado.
+******
+* Input:
+* string rol, descripcion: Se le entrega un rol para encontrar la cuenta que posee dicho rol y la nueva descripcion que sera modificada.
+* .......
+******
+* Returns:
+* No retorna nada.
+*****/
 void registro_cuentas::modificar(string rol, string descripcion){
     int hashing = hash(rol);
     int contador = 0;
@@ -121,6 +170,18 @@ void registro_cuentas::modificar(string rol, string descripcion){
     cout << "Rol no existente" << endl;
 }
 
+/*****
+* void registro_cunentas::redimensionar()
+******
+* Esta funcion recibe un entero y crea una nueva tabla hash con cantidad de ranuras n agregando en esta los datos de la anterior y eliminandola.
+******
+* Input:
+* int n : Se le entrega un entero que indica la cantida de ranuras que tendra la nueva tabla hash.
+* .......
+******
+* Returns:
+* No retorna nada.
+*****/
 void registro_cuentas::redimensionar(int n){
     cuenta *tabla_v = tabla;
     delete []tabla;
@@ -137,6 +198,18 @@ void registro_cuentas::redimensionar(int n){
     delete []tabla_v;
 }
 
+/*****
+* void registro_cunentas::estadisticas()
+******
+* Esta funcion muestra en la consola las estadisticas correspondientes a la cantidada de ranuras totales, la cantida de ranuras usadas y el factor de carga.
+******
+* Input:
+* No recibe nada.
+* .......
+******
+* Returns:
+* No retorna nada.
+*****/
 void registro_cuentas::estadisticas(){
     factor_de_carga = float(usados)/float(ranuras);
     cout << "RANURAS OCUPADAS: "<< usados  << endl;
@@ -177,10 +250,10 @@ int main() {
                 else if (descripcion == ""){
                     descripcion = aux;
                     aux = "";
-            }
-            }else if (linea[i] != ' '){  
-                aux += linea[i];     
-            }
+                }
+                }else if (linea[i] != ' '){  
+                    aux += linea[i];     
+                }
         }
         i = 0;
         c.rol = rol;
@@ -188,6 +261,8 @@ int main() {
         c.descripcion = descripcion;
         if (funcion == "OBTENER"){
             cuenta c2  = regis.obtener(c.rol);
+
+
             if (c2.rol != ""){
                 cout << c2.nombre << " " << c2.descripcion << endl;
             }else{
@@ -201,12 +276,13 @@ int main() {
             regis.eliminar(c.rol);
         }
         else if (funcion == "MODIFICAR"){
-            regis.modificar(c.rol, c.descripcion);
+            regis.modificar(c.rol, c.nombre);
         }
         else{
             cout << "entra" << endl;
             regis.estadisticas();
         }
+
         funcion = "";
         rol = ""; 
         nombre = "";
