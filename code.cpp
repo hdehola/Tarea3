@@ -15,6 +15,7 @@ class registro_cuentas {
         cuenta* tabla; // Aca se almacenaran los elementos de la tabla
         int ranuras = 15; // Cuantas ranuras tiene la tabla hash (inicialmente)
         int usados = 0;  //se usa para contar cuantas casillas hay usadas///////////////////////////////////////////
+
         int hash(string rol){  // Se obtiene el hash dado el rol   //sumar con el cogdigo ascii el primer y ultimo digito por el "k" 
             int N2 = int(rol[8]);
             int resto = N2 % ranuras;
@@ -99,11 +100,38 @@ void registro_cuentas::eliminar(string rol){
     cout << "Rol no existente" << endl;
 }
 
+void registro_cuentas::modificar(string rol, string descripcion){
+    int hashing = hash(rol);
+
+    if (tabla[hashing].rol != rol){
+        cout<<"Rol no existente"<<endl;
+        return;
+    }
+    else{
+        tabla[hashing].descripcion = descripcion;
+    }
+}
+
+void registro_cuentas::estadisticas(){
+    int usados, totales;
+    float carga = (usados+0.0)/totales;
+
+    cout<<"RANURAS OCUPADAS: "<<usados<<endl;
+    cout<<"RANURAS TOTALES: "<<totales<<endl;
+    cout<<"FACTOR DE CARGA: "<<carga<<endl;
+}
+
+/*
+void registro_cuenta::redimencionar(){
+
+}
+*/
+
 int main() {
     ifstream archivo;
     int i;
     string linea, aux;
-    string funcion, rol, nombre, descripcion;
+    string funcion, rol, info1, info2;
     registro_cuentas regis;
     cuenta c;
     //char caracter;
@@ -113,6 +141,7 @@ int main() {
         exit(1);
     };
     while (!archivo.eof()){
+    
         getline(archivo, linea);
         for (i = 0; i < int(linea.length()) + 1; i++){
             if (linea[i] == ' '|| i == int(linea.length())){
@@ -124,22 +153,23 @@ int main() {
                     rol = aux;
                     aux = "";
                 }   
-                else if (nombre == ""){
-                    nombre = aux;
+                else if (info1 == ""){
+                    info1 = aux;
                     aux = "";
                 }
-                else if (descripcion == ""){
-                    descripcion = aux;
+                else if (info2 == ""){
+                    info2 = aux;
                     aux = "";
-            }
+                }
             }else if (linea[i] != ' '){  
                 aux += linea[i];     
             }
         }
         i = 0;
         c.rol = rol;
-        c.nombre = nombre;
-        c.descripcion = descripcion;
+        c.nombre = info1;
+        c.descripcion = info1;
+
         if (funcion == "OBTENER"){
             cuenta c = regis.obtener(c.rol);
             if (c.rol != ""){
@@ -154,11 +184,21 @@ int main() {
         else if(funcion == "QUITAR"){
             regis.eliminar(c.rol);
         }
+
+        else if (funcion == "MODIFICAR"){
+            regis.modificar(c.rol, info1);
+        }
+
+        else if(funcion == "ESTRADISTICAS"){
+            regis.estadisticas();
+        }
+
         funcion = "";
         rol = ""; 
-        nombre = "";
-        descripcion = "";
+        info1 = "";
+        info2 = "";
     }
+    
     archivo.close();
     return 0;
 }
