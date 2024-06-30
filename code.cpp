@@ -49,7 +49,7 @@ cuenta registro_cuentas::obtener(string rol){
     int contador = 0;
     int hashing = hash(rol);
     while(contador < ranuras){
-        if (tabla[hashing].rol == rol) {
+        if (tabla[hashing].rol == rol){
             return tabla[hashing];
         }
         else{
@@ -76,8 +76,8 @@ void registro_cuentas::agregar(cuenta c){
             cout << "Rol ya existente" <<endl;
             break;
         }else{
-            hashing = p(c.rol, contador);
             contador++;
+            hashing = p(c.rol, contador);
         }
     }
 }
@@ -86,16 +86,11 @@ void registro_cuentas::eliminar(string rol){
     int contador = 0;
     int hashing = hash(rol);
     while(true){
-        cout << tabla[hashing].rol << endl;
-        cout << rol << endl;
-        cout <<""<<endl;
         if (tabla[hashing].rol == rol){
             tabla[hashing].rol = "";
             usados--;
-            cout << "si se borro" << endl;
             break;
         } else if (contador == ranuras) {
-            cout << "Rol no" << endl;
             break;
         }else{
             contador++;
@@ -112,13 +107,13 @@ void registro_cuentas::modificar(string rol, string descripcion){
             tabla[hashing].descripcion = descripcion;
             break;
         } else if (contador == ranuras) {
+            cout << "Rol no existente" << endl;
             break;
         }else{
             contador++;
             hashing = p(rol, contador);
         }
     }
-    cout << "Rol no existente" << endl;
 }
 
 void registro_cuentas::redimensionar(int n){
@@ -138,7 +133,7 @@ void registro_cuentas::redimensionar(int n){
 }
 
 void registro_cuentas::estadisticas(){
-    factor_de_carga = float(usados)/float(ranuras);
+    factor_de_carga = (usados+0.0)/ranuras;
     cout << "RANURAS OCUPADAS: "<< usados  << endl;
     cout << "RANURAS TOTALES: " << ranuras << endl;
     cout << "FACTOR DE CARGA: "<< factor_de_carga << endl;
@@ -159,11 +154,13 @@ int main() {
     };
     while (!archivo.eof()){
         getline(archivo, linea);
+        if (linea[linea.size()-1] == '\r') {
+            linea.erase(linea.size()-1);
+        }
         for (i = 0; i < int(linea.length()) + 1; i++){
             if (linea[i] == ' '|| i == int(linea.length())){
                 if (funcion == ""){
                     funcion = aux;
-                    cout << funcion << endl;
                     aux = "";
                 }
                 else if (rol == ""){
@@ -187,24 +184,23 @@ int main() {
         c.nombre = nombre;
         c.descripcion = descripcion;
         if (funcion == "OBTENER"){
-            cuenta c2  = regis.obtener(c.rol);
+            cuenta c2 = regis.obtener(c.rol);
             if (c2.rol != ""){
                 cout << c2.nombre << " " << c2.descripcion << endl;
             }else{
                 cout << "Rol no existente" << endl;
             }
         }
-        else if (funcion == "AGREGAR"){
+        if (funcion == "AGREGAR"){
             regis.agregar(c);
         }
-        else if(funcion == "QUITAR"){
+        if(funcion == "QUITAR"){
             regis.eliminar(c.rol);
         }
-        else if (funcion == "MODIFICAR"){
-            regis.modificar(c.rol, c.descripcion);
+        if (funcion == "MODIFICAR"){
+            regis.modificar(c.rol, c.nombre);
         }
-        else{
-            cout << "entra" << endl;
+        if (funcion == "ESTADISTICAS"){
             regis.estadisticas();
         }
         funcion = "";
