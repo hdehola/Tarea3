@@ -15,10 +15,12 @@ class registro_cuentas {
         cuenta* tabla; // Aca se almacenaran los elementos de la tabla
         int ranuras = 15; // Cuantas ranuras tiene la tabla hash (inicialmente)
         int usados = 0;  //se usa para contar cuantas casillas hay usadas///////////////////////////////////////////
-        int hash(string rol){  // Se obtiene el hash dado el rol   //sumar con el cogdigo ascii el primer y ultimo digito por el "k" 
-            int N2 = int(rol[8]);
-            int resto = N2 % ranuras;
-            return resto;
+        int hash(string rol) {
+            int hash_value = 0;
+            for (char c : rol) {
+                hash_value = (hash_value * 31 + c) % ranuras;
+                return hash_value;
+            }
         }
         int p(string rol, int i){ // Se obtiene la ranura a revisar en caso de colisión dado el rol y el intento i, 1, 13, 14
             int hashing = hash(rol); 
@@ -140,74 +142,41 @@ void registro_cuentas::estadisticas(){
 }
 
 int main() {
-    ifstream archivo;
-    int i;
-    string linea, aux;
-    string funcion, rol, nombre, descripcion;
+    ifstream archivo("prueba.txt");
+    string linea, funcion, rol, nombre, descripcion;
     registro_cuentas regis;
-    cuenta c;
-    //char caracter;
-    archivo.open("prueba.txt", ios::in);
-    if (archivo.fail()){
-        cout << "No se pudo abrir el archivo"<< endl;
-        exit(1);
-    };
-    while (!archivo.eof()){
-        getline(archivo, linea);
-        if (linea[linea.size()-1] == '\r') {
-            linea.erase(linea.size()-1);
-        }
-        for (i = 0; i < int(linea.length()) + 1; i++){
-            if (linea[i] == ' '|| i == int(linea.length())){
-                if (funcion == ""){
-                    funcion = aux;
-                    aux = "";
-                }
-                else if (rol == ""){
-                    rol = aux;
-                    aux = "";
-                }   
-                else if (nombre == ""){
-                    nombre = aux;
-                    aux = "";
-                }
-                else if (descripcion == ""){
-                    descripcion = aux;
-                    aux = "";
-            }
-            }else if (linea[i] != ' '){  
-                aux += linea[i];     
-            }
-        }
-        i = 0;
-        c.rol = rol;
-        c.nombre = nombre;
-        c.descripcion = descripcion;
-        if (funcion == "OBTENER"){
+
+    if (!archivo.is_open()) {
+        cout << "No se pudo abrir el archivo" << endl;
+        return 1;
+    }
+
+    while (getline(archivo, linea)) {
+        if (linea.empty()) continue;
+
+        istringstream iss(linea);
+        iss >> funcion >> rol >> nombre >> descripcion;
+
+        cuenta c = { rol, nombre, descripcion };
+
+        if (funcion == "OBTENER") {
             cuenta c2 = regis.obtener(c.rol);
-            if (c2.rol != ""){
+            if (c2.rol != "") {
                 cout << c2.nombre << " " << c2.descripcion << endl;
-            }else{
+            } else {
                 cout << "Rol no existente" << endl;
             }
-        }
-        if (funcion == "AGREGAR"){
+        } else if (funcion == "AGREGAR") {
             regis.agregar(c);
-        }
-        if(funcion == "QUITAR"){
+        } else if (funcion == "QUITAR") {
             regis.eliminar(c.rol);
-        }
-        if (funcion == "MODIFICAR"){
-            regis.modificar(c.rol, c.nombre);
-        }
-        if (funcion == "ESTADISTICAS"){
+        } else if (funcion == "MODIFICAR") {
+            regis.modificar(c.rol, c.descripcion);
+        } else if (funcion == "ESTADISTICAS") {
             regis.estadisticas();
         }
-        funcion = "";
-        rol = ""; 
-        nombre = "";
-        descripcion = "";
     }
+
     archivo.close();
     return 0;
 }
