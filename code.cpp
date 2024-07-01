@@ -232,6 +232,9 @@ int main() {
     };
     while (!archivo.eof()){
         getline(archivo, linea);
+        if (linea[linea.size()-1] == '\r') {
+            linea.erase(linea.size()-1);
+        }
         for (i = 0; i < int(linea.length()) + 1; i++){
             if (linea[i] == ' '|| i == int(linea.length())){
                 if (funcion == ""){
