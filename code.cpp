@@ -22,14 +22,15 @@ class registro_cuentas {
         }
         int p(string rol, int i){ // Se obtiene la ranura a revisar en caso de colisión dado el rol y el intento i, 1, 13, 14
             int hashing = hash(rol); 
-            int p = ((i*i)+i+hashing) % ranuras;
+            int p = ((i*i)+i+hashing) % ranuras+1;
+            if (p < 0){
+                return -p;
+            }
             return p;
         }
     public:
         registro_cuentas() {   // (Recuerde que puede crear con distintos parametros)
             tabla = new cuenta[ranuras];
-            cuenta c;
-            c.rol = "";
             for (int i = 0; i < ranuras; i++){
                 tabla[i].rol = "";
             }
@@ -39,7 +40,7 @@ class registro_cuentas {
         }
         cuenta obtener(string rol); // Dado el rol, devuelve la cuenta con ese rol
         void agregar(cuenta c); // Se agrega una cuenta a la tabla
-        void eliminar(string rol); // Se elimina la cuenta 
+        void eliminar(string rol); // Se elimina la cuenta
         void modificar(string rol, string descripcion); // Se modifica la descripcion del rol
         void redimensionar(int n); // Se redimensiona la tabla a n espacios
         void estadisticas(); // Debe mostrar las estadisticas
