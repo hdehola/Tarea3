@@ -296,7 +296,7 @@ int main() {
         else if (funcion == "MODIFICAR"){
             regis.modificar(c.rol, c.descripcion);
         }
-        else{
+        else if (funcion == "ESTADISTICAS"){
             regis.estadisticas();
         }
         funcion = "";
