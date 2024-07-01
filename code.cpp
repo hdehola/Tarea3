@@ -16,7 +16,7 @@ class registro_cuentas {
         int ranuras = 15; // Cuantas ranuras tiene la tabla hash (inicialmente)
         int usados = 0;  //se usa para contar cuantas casillas hay usadas///////////////////////////////////////////
         int hash(string rol){  // Se obtiene el hash dado el rol   //sumar con el cogdigo ascii el primer y ultimo digito por el "k" 
-            int N2 = int(rol[8]);
+            int N2 = int(rol.length());
             int resto = N2 % ranuras;
             return resto;
         }
